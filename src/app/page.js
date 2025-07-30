@@ -64,7 +64,7 @@ export default function Home() {
         </div>
 
         {/* Right Side - Custom Vertical Swiper */}
-        <div className="relative h-[900px] flex items-center justify-center overflow-hidden">
+        <div className="relative h-[900px] flex items-center justify-center">
           <div className="relative h-[500px] w-full flex flex-col items-center justify-center">
             <AnimatePresence initial={false}>
               {visibleItems.map(({ id, name, logo, offset }) => {
@@ -83,12 +83,12 @@ export default function Home() {
                       y: baseY,
                       opacity: isCenter ? 1 : 0.4,
                       scale: isCenter ? 1 : 0.85,
-                      left: (Fourth || Second) ? "-100px" : isCenter ? "-200px" : (Fifth || First) ? "-50px" : "0"
+                      left: (Fourth || Second) ? "-100px" : isCenter ? "-200px" : (Fifth || First) ? "0" : "0"
                     }}
                     exit={{ opacity: 0, y: baseY - 30 }}
                     transition={{ duration: 0.4, ease: "easeOut" }}
                     className="absolute w-full flex items-center justify-center gap-6"
-                    style={{ zIndex: 10 - Math.abs(offset), left: isCenter ? "-100px" : "0" }}
+                    style={{ zIndex: 10 - Math.abs(offset), }}
                   >
                     <img
                       src={logo}
@@ -115,5 +115,7 @@ export default function Home() {
     </main>
   );
 }
+
+
 
 
