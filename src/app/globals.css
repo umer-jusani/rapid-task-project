@@ -33,7 +33,6 @@ body {
 .gradient-text {
   font-size: 3.75rem;
   font-weight: 700;
-  white-space: nowrap;
 
   background: linear-gradient(
     to right,
@@ -44,6 +43,10 @@ body {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   color: transparent;
+
+  @media (min-width: 40em) {
+    white-space: nowrap;
+  }
 }
 
 /* Hides scrollbar cross-browser */
