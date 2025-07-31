@@ -45,7 +45,7 @@ export default function Home() {
         handleWheel(e);
       }
     };
-    window.addEventListener("wheel", preventScroll, { passive: false });
+    window.addEventListener("scroll", preventScroll, { passive: false });
     return () => window.removeEventListener("wheel", preventScroll);
   }, []);
 
