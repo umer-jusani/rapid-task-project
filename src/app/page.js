@@ -5,15 +5,27 @@ import { useEffect, useState } from "react";
 import { carriers } from "../../constant";
 import CarrierTextBlock from "@/components/CarrierTextBlock";
 
-
 export default function Home() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isDesktop, setIsDesktop] = useState(true);
-  const total = carriers.length;
-  const VISIBLE_COUNT = isDesktop ? 5 : 1;
+  const [visibleCount, setVisibleCount] = useState(5);
 
-  const visibleItems = Array.from({ length: VISIBLE_COUNT }, (_, i) => {
-    const offset = i - Math.floor(VISIBLE_COUNT / 2);
+  const total = carriers.length;
+
+  useEffect(() => {
+    const checkScreen = () => {
+      const width = window.innerWidth;
+      const desktop = width >= 1240;
+      setIsDesktop(desktop);
+      setVisibleCount(width <= 768 ? 1 : desktop ? 5 : 3);
+    };
+    checkScreen();
+    window.addEventListener("resize", checkScreen);
+    return () => window.removeEventListener("resize", checkScreen);
+  }, []);
+
+  const visibleItems = Array.from({ length: visibleCount }, (_, i) => {
+    const offset = i - Math.floor(visibleCount / 2);
     const index = (currentIndex + offset + total) % total;
     return { ...carriers[index], offset };
   });
@@ -27,20 +39,23 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const checkScreen = () => setIsDesktop(window.innerWidth >= 1024);
-    checkScreen();
-    window.addEventListener("resize", checkScreen);
-    return () => window.removeEventListener("resize", checkScreen);
+    const preventScroll = (e) => {
+      if (window.innerWidth >= 768) {
+        e.preventDefault();
+        handleWheel(e);
+      }
+    };
+    window.addEventListener("wheel", preventScroll, { passive: false });
+    return () => window.removeEventListener("wheel", preventScroll);
   }, []);
 
-  useEffect(() => {
-    const handle = (e) => {
-      e.preventDefault();
-      handleWheel(e);
-    };
-    window.addEventListener("wheel", handle, { passive: false });
-    return () => window.removeEventListener("wheel", handle);
-  }, []);
+  const getLeftOffset = ({ First, Second, isCenter, Fourth, Fifth }) => {
+    if (!isDesktop) return "0";
+    if (Fourth || Second) return "-100px";
+    if (isCenter) return "-200px";
+    if (Fifth || First) return "0";
+    return "0";
+  };
 
   return (
     <main className="h-screen w-full bg-white overflow-hidden">
@@ -68,15 +83,7 @@ export default function Home() {
                       y: baseY,
                       opacity: isCenter ? 1 : 0.4,
                       scale: isCenter ? 1 : 0.85,
-                      left: isDesktop
-                        ? (Fourth || Second)
-                          ? "-100px"
-                          : isCenter
-                            ? "-200px"
-                            : (Fifth || First)
-                              ? "0"
-                              : "0"
-                        : "0"
+                      left: getLeftOffset({ First, Second, Fourth, Fifth, isCenter }),
                     }}
                     exit={{ opacity: 0, y: baseY - 30 }}
                     transition={{ duration: 0.4, ease: "easeOut" }}
@@ -86,7 +93,7 @@ export default function Home() {
                     <img
                       src={logo}
                       alt={name}
-                      className={`md:w-[150px] w-[120px] | h-auto object-contain bg-white p-4 drop-shadow-lg rounded-full transition-all`}
+                      className="md:w-[150px] w-[120px] h-auto object-contain bg-white p-4 drop-shadow-lg rounded-full transition-all"
                     />
                     <span
                       className="md:text-2xl font-bold"
@@ -108,6 +115,7 @@ export default function Home() {
     </main>
   );
 }
+
 
 
 
