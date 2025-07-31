@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { carriers } from "../../constant";
+import CarrierTextBlock from "@/components/CarrierTextBlock";
 
 
 export default function Home() {
@@ -43,25 +44,12 @@ export default function Home() {
 
   return (
     <main className="h-screen w-full bg-white overflow-hidden">
-      <section className="container h-full mx-auto grid md:grid-cols-2 px-5 md:items-center">
+      <section className="md:container h-full mx-auto grid md:grid-cols-2 px-5 items-center">
         {/* Left Side */}
-        <div className="h-fit">
-          <div className="w-min md:space-y-4 space-y-2">
-            <h5 className="uppercase | text-[16px] md:text-[18px] | font-semibold">Carrier</h5>
-            <h1 className="gradient-text | text-9xl sm:text-4xl md:text-5xl lg:text-6xl | font-bold">
-              Carrier Partners
-            </h1>
-            <p className="text-[14px] sm:text-[16px] md:text-[18px] | font-semibold">
-              Utilizing State-Of-The-Art Technology For Real-Time Tracking And Efficiency.
-            </p>
-            <button className="mt-6 sm:mt-10 md:mt-12 | btn | py-2 px-6 sm:px-8 | rounded-4xl cursor-pointer font-semibold text-sm sm:text-base">
-              Get Started
-            </button>
-          </div>
-        </div>
+        <CarrierTextBlock />
 
         {/* Right Side - Custom Vertical Swiper */}
-        <div className="relative h-[200px] md:h-[900px]  flex items-center justify-center">
+        <div className="relative h-[200px] md:h-[900px] md:flex md:items-center md:justify-center">
           <div className="w-full flex flex-col items-center justify-center">
             <AnimatePresence initial={false}>
               {visibleItems.map(({ id, name, logo, offset }) => {
