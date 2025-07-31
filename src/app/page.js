@@ -40,12 +40,10 @@ export default function Home() {
 
   useEffect(() => {
     const preventScroll = (e) => {
-      if (window.innerWidth >= 768) {
-        e.preventDefault();
-        handleWheel(e);
-      }
+      e.preventDefault();
+      handleWheel(e);
     };
-    window.addEventListener("scroll", preventScroll, { passive: false });
+    window.addEventListener("wheel", preventScroll, { passive: false });
     return () => window.removeEventListener("wheel", preventScroll);
   }, []);
 
@@ -115,7 +113,6 @@ export default function Home() {
     </main>
   );
 }
-
 
 
 
